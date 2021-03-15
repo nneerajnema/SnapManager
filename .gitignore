@@ -1,0 +1,22 @@
+#Package Files"
+*.jar
+*.war
+*.ear
+
+#build files
+**/target
+target
+build
+
+#IDE files
+.idea/
+.settings/
+
+.DS_Store
+.classpath
+.project
+.gradle
+
+*.iml
+
+bin/
