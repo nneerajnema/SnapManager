@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /*
@@ -29,7 +30,7 @@ Based on the above directory structure, the value of variables will be:
 public class RAWDelete {
 
     /**
-     * @param args
+     * @param args No Args
      */
     public static void main(String[] args) {
 
@@ -71,7 +72,7 @@ public class RAWDelete {
 
         if (rawContainer.isDirectory() && jpegContainer.isDirectory()) {
             List<String> jpegImages = getJpegFileNames(jpegContainer);
-            Arrays.asList(rawContainer.listFiles()).stream()
+            Arrays.stream(Objects.requireNonNull(rawContainer.listFiles()))
                     .filter(rawImage -> rawImage.isFile() && (!jpegImages.contains(truncateExtension(rawImage))))
                     .forEach(rawImage -> System.out.println(rawImage.getName() + " deletion " + (rawImage.delete() ? "complete." : "failed.")));
         } else {
@@ -88,10 +89,10 @@ public class RAWDelete {
      * @return List of JPEG file names without extension
      */
     private static List<String> getJpegFileNames(File jpegContainer) {
-        List<String> jpegFiles = new ArrayList<String>();
+        List<String> jpegFiles = new ArrayList<>();
         if (jpegContainer.isDirectory()) {
-            jpegFiles = Arrays.asList(jpegContainer.listFiles()).stream().
-                    filter(jpegFile -> jpegFile.isFile()).map(jpegFile -> truncateExtension(jpegFile)).
+            jpegFiles = Arrays.stream(Objects.requireNonNull(jpegContainer.listFiles())).
+                    filter(File::isFile).map(RAWDelete::truncateExtension).
                     collect(Collectors.toList());
         }
 
